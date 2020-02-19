@@ -1,41 +1,40 @@
 @extends('layouts.app')
 @section('content')
 
-<a type="button" href="{{ route('artist.create' )}}" class="btn btn-info"> Create 
+<a type="button" href="{{ route('movie.create' )}}" class="btn btn-info"> Create 
         <i class="fas fa-trash fa-lg" ></i>
 </a>
 
 <table class="table table-striped table-centered">
         <thead>
             <tr>
-                <th> {{ __('Name') }} </th>
-                <th> {{ __('Firstname') }} </th>
+                <th> {{ __('title') }} </th>
+                <th> {{ __('year') }} </th>
                 <th> {{ __('Actions') }} </th>
             </tr>
         </thead>
         <tbody>
-            @foreach($artists as $artist)
+            @foreach($movies as $movie)
             <tr>
-                <td> {{ $artist->name }} </td>
-                <td> {{ $artist->firstname }} </td>
-                <td class="table-action">  <a type="button" href="{{ route('artist.edit', $artist->id )}}" class="btn btn-sm" data-toggle="tooltip"
-            title="@lang('Edit artist') {{$artist->name }}"> Edit</a>
+                <td> {{ $movie->title }} </td>
+                <td> {{ $movie->year }} </td>
+                <td class="table-action">  
+             <a type="button" href="{{ route('movie.edit', $movie->id )}}" class="btn btn-sm" data-toggle="tooltip"
+            title="@lang('Edit movie') {{$movie->title }}"> Edit</a>
                     
-            <a type="button" href="{{ route('artist.destroy', $artist->id )}}" class="btn btn-danger btn-sm btn-delete" data-toggle="tooltip"
-                    title="@lang('Delete artist') {{$artist->name }}"> Delete 
+            <a type="button" href="{{ route('movie.destroy', $movie->id )}}" class="btn btn-danger btn-sm btn-delete" data-toggle="tooltip"
+                    title="@lang('Delete movie') {{$movie->title }}"> Delete 
                     <i class="fas fa-trash fa-lg" ></i>
-            </a>
+            </a>  
         </td>
-    
             </tr>
-           
             @endforeach
         </tbody>
     </table>
-    
- {{ $artists->appends(request()->except('page'))->links() }}
-
-<script> 
+   
+    {{ $movies->appends(request()->except('page'))->links() }}
+ 
+    <script> 
         $.ajaxSetup({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
         });
@@ -52,5 +51,5 @@
             return false; 
         }); 
 
-</script> 
+</script>  
 @endsection

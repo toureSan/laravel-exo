@@ -16,10 +16,10 @@ class CreateArtistMovieTable extends Migration
         Schema::create('artist_movie', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('role_name',20);
-            $table->string('movie_id')->unsigned();
-            $table->string('movie_id')->references('id')->('movies');
-            $table->string('artist_id')->unsigned();
-            $table->string('artist_id')->references('id')->('artists');
+            $table->bigInteger('movie_id')->unsigned();
+            $table->foreign('movie_id')->references('id')->on('movies');
+            $table->bigInteger('artist_id')->unsigned();
+            $table->foreign('artist_id')->references('id')->on('artists');
             $table->timestamps();        
         });
     }

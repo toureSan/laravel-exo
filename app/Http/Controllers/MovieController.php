@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use \App\Models\Movie;
 use Illuminate\Http\Request;
-use App\Http\Requests\ArtistRequest;
-use App\Models\Artist;
+use \App\Http\Requests\MovieRequest;
+use \App\Models\Artist;
+use Intervention\Image\Facades\Image;
 
-class ArtistController extends Controller
+class MovieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,7 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        //
-        return view ('artists.index', [ 'artists' => Artist::paginate(6) ]);
+        return view('movies.index', [ 'movies' => Movie::all()]);
     }
 
     /**
@@ -26,8 +26,7 @@ class ArtistController extends Controller
      */
     public function create()
     {
-        //
-        return view('artists.create'); 
+        return view('movies.create', ['artists' => Artist::all()]);
     }
 
     /**
@@ -36,11 +35,20 @@ class ArtistController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArtistRequest $request)
+    public function store(MovieRequest $request)
     {
-        //
-        \App\Models\Artist::create($request->all()); 
-        return redirect()->route('artist.create')->with('ok', __('artist has been saved')); 
+
+        
+    $movie= Movie::create($request->all());
+      
+        $poster = $request->file( 'poster' ); 
+
+        $filename = 'poster_' .$movie->id . '.' .$poster->guessClientExtension(); 
+        Image::make( $poster )->fit(180, 240) 
+                                ->save(public_path('/upload/posters/' . $filename));
+        return redirect()->route('movie.create')
+        ->with('ok', __ ('Movie has been saved'));
+                        
     }
 
     /**
@@ -60,9 +68,9 @@ class ArtistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Artist $artist)
+    public function edit(Movie $movie)
     {
-        return view('artists.edit',['artist' => $artist]);
+    return view('movies.edit', ['movie' => $movie]);
     }
 
     /**
@@ -72,12 +80,11 @@ class ArtistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArtistRequest $request, Artist $artist)
+    public function update(MovieRequest $request, Movie $artist)
     {
-        //
-        $artist->update($request->all() ); 
-        return redirect()->route('artist.index')
-            ->with('ok', __('Artist has been updated'));
+    $movie->update( $request->all() );
+   
+    return redirect()->route('movie.index')->with( 'ok', __('Movie has been updated') );
     }
 
     /**
@@ -86,14 +93,8 @@ class ArtistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Artist $artist)
+    public function destroy($id)
     {
         //
-        $artist->delete(); 
-        return response()->json();
-    }
-
-    public function __constructor(){
-        
     }
 }
