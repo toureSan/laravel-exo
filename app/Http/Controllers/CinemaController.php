@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CinemRequest;
+use App\Models\Cinema;
 
 class CinemaController extends Controller
 {
@@ -14,6 +16,8 @@ class CinemaController extends Controller
     public function index()
     {
         //
+        return view ('cinemas.index', [ 'cinemas' => Cinema::paginate(6) ]);
+
     }
 
     /**
@@ -24,6 +28,7 @@ class CinemaController extends Controller
     public function create()
     {
         //
+        return view('cinemas.create');
     }
 
     /**
@@ -35,6 +40,8 @@ class CinemaController extends Controller
     public function store(Request $request)
     {
         //
+        \App\Models\Cinema::create($request->all());
+        return redirect()->route('cinema.create')->with('ok', __('artist has been saved'));
     }
 
     /**
