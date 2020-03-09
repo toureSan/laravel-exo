@@ -7,6 +7,7 @@ use \App\Http\Requests\MovieRequest;
 use \App\Models\Artist;
 use Intervention\Image\Facades\Image;
 
+
 class MovieController extends Controller
 {
     /**
@@ -16,7 +17,12 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return view('movies.index', [ 'movies' => Movie::all()]);
+        // $artist = new Artist(['name' => 'Johnson', 'firstname' => 'Dwayne']);
+        // $movie = Movie::find(1);
+        // $movie->actors()->save($artist);
+
+        return view('movies.index', [ 'movies' => Movie::paginate(3)]);
+
     }
 
     /**
@@ -37,18 +43,17 @@ class MovieController extends Controller
      */
     public function store(MovieRequest $request)
     {
+        $movie = Movie::create($request->all());
+        $poster = $request->file( 'poster' );
 
-        
-    $movie= Movie::create($request->all());
-      
-        $poster = $request->file( 'poster' ); 
+        $filename = 'poster_' . $movie->id . '.' .$poster->guessClientExtension();
+        Image::make( $poster )->fit( 180, 240 )
+                              ->save( public_path( '/uploads/posters/' . $filename ) );
 
-        $filename = 'poster_' .$movie->id . '.' .$poster->guessClientExtension(); 
-        Image::make( $poster )->fit(180, 240) 
-                                ->save(public_path('/upload/posters/' . $filename));
-        return redirect()->route('movie.create')
-        ->with('ok', __ ('Movie has been saved'));
-                        
+    return redirect()->route('movie.create')
+    ->with('ok', __ ('Movie has been saved'));
+
+
     }
 
     /**
@@ -70,7 +75,8 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie)
     {
-    return view('movies.edit', ['movie' => $movie]);
+        return view('movies.edit', ['movie' => $movie], ['artists' => Artist::all()]);
+
     }
 
     /**
@@ -80,12 +86,13 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MovieRequest $request, Movie $artist)
+    public function update(MovieRequest $request, Movie $movie)
     {
-    $movie->update( $request->all() );
-   
-    return redirect()->route('movie.index')->with( 'ok', __('Movie has been updated') );
-    }
+        $movie->update( $request->all() );
+
+    return redirect()->route('movie.index')
+                     ->with( 'ok',__('Movie has been updated') );
+                    }
 
     /**
      * Remove the specified resource from storage.
@@ -93,8 +100,14 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Movie $movie)
     {
-        //
+        $movie->delete();
+        return response()->json();
     }
+    public function __construct()
+    {
+        $this->middleware('ajax')->only('destroy');
+    }
+
 }

@@ -1,27 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ajout </title>
-</head>
-<body>
-<form action="{{route('artist.store')}}" method="post">
+@extends('layouts.app')
+@section('content')
+
+<form action="{{route('artist.store')}}" method="post" enctype="multipart/form-data>
     {{csrf_field()}}
 
     <p>
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" value="" required>
+        <input type="text" name="name" class="form-control" id="name" value="" required>
     </p>
 
     <p>
         <label for="firstname">firstname</label>
-        <input type="text" name="firstname" id="firstname" value="" required>
+        <input type="text" class="form-control" name="firstname" id="firstname" value="" required>
     </p>
 
-    <button type="submit">Created</button>
-    
+    <button type="submit" class="btn btn-warning"> Create </button>
+
 </form>
-</body>
-</html>
+<style>
+
+        form{
+            height: 600px;
+            border-radius: 20px;
+            align-items: center;
+            margin-left: 30px;
+            margin-top: 70px;
+            width: 60%;
+        }
+ </style>
+@endsection

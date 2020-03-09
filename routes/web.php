@@ -17,8 +17,10 @@ Route::get('/', function () {
 
 Route::resource('artist', 'ArtistController');
 Route::resource ('movie', 'MovieController');
+Route::resource ('cinema', 'CinemaController');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('profile', 'UserController@profile')->middleware('auth');
+

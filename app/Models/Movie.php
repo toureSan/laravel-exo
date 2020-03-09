@@ -19,6 +19,6 @@ class Movie extends Model
     }
 
     public function actors(){
-        return $this->belongsToMany('App\Models\Artist'); 
+        return $this->belongsToMany('App\Models\Artist');
     }
 }

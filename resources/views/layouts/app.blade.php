@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
         <!--script jquery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <!-- Styles -->
         <style>
             html, body {
@@ -68,42 +68,37 @@
     </head>
     <body>
 
-        @if(session('ok'))
-        <div class="container">
-            <div class="alert alert-dismissible alert-sucess fade show" role="alert">
-                {{session('ok')}}
-                <button type="button" class="close" date-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times; </span>
-                </button>
-            </div>
-        </div>
-       @endif 
-
-        <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
-                <div class="top-right links">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a class="nav-item active" href="{{ url('login') }}">Adminstration</a>
+
                     @else
-                        <a href="{{ route('login') }}">Login</a>
+                        <a  class="nav-item active" href="{{ route('login') }}">Login</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a class="nav-item active" href="{{ route('register') }}">Register</a>
                         @endif
+                          @if (Route::has('register'))
+                            <a class="nav-item active" href="{{ route('register') }}">Register</a>
+                        @endif
+
                     @endauth
                 </div>
+                </nav>
             @endif
-
+            <div class="flex">
             <div class="content">
-                    <div class="m-b-md">
+
                         @yield('text-content')
-                    </div>
-    
+
+
                     @yield('content')
                     <div class="links">
                         @yield('menu')
                     </div>
             </div>
-        
+
     </body>
 </html>

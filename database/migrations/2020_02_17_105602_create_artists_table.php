@@ -18,6 +18,8 @@ class CreateArtistsTable extends Migration
             $table->string('name',28);
             $table->string('firstname', 15); 
             $table->string('birthdate')->nullable();
+            $table->string('src');
+            $table->string('filmographie');
             $table->timestamps(); 
             
         });

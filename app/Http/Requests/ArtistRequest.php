@@ -26,7 +26,7 @@ class ArtistRequest extends FormRequest
         return [
             //
             'name' => 'required|string|max:20',
-  
+
         ];
     }
 }
